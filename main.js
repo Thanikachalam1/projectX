@@ -1,33 +1,3 @@
-const rocket = document.getElementById('rocket');
-const fire = document.getElementById('fire');
-const guidanceText = document.getElementById('guidance-text');
-let isMovingUp = false;
-let altitude = 0;
-const clouds = [];
-const stars = [];
-const maxClouds = 10;
-const maxStars = 100;
-const cloudSpeed = 5;
-const starSpeed = 1;
-let cloudIntervalSet = false;
-let cloudVisibilityTimeout;
-let automaticMovement = false;
-const throttleSound = document.getElementById('throttle-sound');
-const spaceSound = document.getElementById('space-sound');
-const fuelValue = document.getElementById('fuel-value');
-const massValue = document.getElementById('mass-value');
-let fuel = 10000;
-let mass = 254000;
-let engineActivated = false;
-let fuelDepleted = false;
-
-function handleFuelDepletion() {
-    fuelDepleted = true;
-    engineActivated = false;
-    fire.style.display = 'none';
-    fire.style.opacity = 0;
-    guidanceText.style.display = 'block';
-    guidanceText.textContent = 'Fuel Depleted!';const rocket = document.getElementById('rocket');
 const fire = document.getElementById('fire');
 const guidanceText = document.getElementById('guidance-text');
 let isMovingUp = false;
