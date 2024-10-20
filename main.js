@@ -15,7 +15,7 @@ const throttleSound = document.getElementById('throttle-sound');
 const spaceSound = document.getElementById('space-sound');
 const fuelValue = document.getElementById('fuel-value');
 const massValue = document.getElementById('mass-value');
-let fuel = 10000;
+let fuel = 1000;
 let mass = 254000;
 let engineActivated = false;
 let fuelDepleted = false;
@@ -243,21 +243,26 @@ for (let i = 0; i < maxStars; i++) {
 animate();
 
     guidanceText.style.color = "white";
-}
-
 function updateFuel() {
-    if ((engineActivated && fuel > 0) || altitude >= 2000) {
-        fuel = Math.max(fuel - 10, 0);
-        fuelValue.textContent = fuel;
+        
+    if (engineActivated) {
+            
+        if (altitude < 2000 && fuel > 0) {
+            fuel = Math.max(fuel - 10, 0);
+             fuelValue.textContent = fuel;
+    
+                
         if (fuel > 0) {
-            mass = Math.max(mass - 1, 0);
-            massValue.textContent = mass;
-        }
+                mass = Math.max(mass - 1, 0);
+                massValue.textContent = mass;
+            }
         if (fuel === 0) {
-            handleFuelDepletion();
+                handleFuelDepletion();
+            }
         }
     }
 }
+    
 
 function resetValues() {
     fuel = 10000;
@@ -457,3 +462,11 @@ for (let i = 0; i < maxStars; i++) {
 }
 
 animate();
+function a() {
+    updateFuel();      
+    updateAltitude();  
+    requestAnimationFrame(gameLoop); 
+}
+
+
+a(); 
