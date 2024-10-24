@@ -31,19 +31,24 @@ function handleFuelDepletion() {
     guidanceText.style.color = "white";
 }
 
+
 function updateFuel() {
-    if ((engineActivated && fuel > 0) || altitude < 200) {
-        fuel = Math.max(fuel - 10, 0);
-        fuelValue.textContent = fuel;
-        if (fuel > 0) {
-            mass = Math.max(mass - 1, 0);
-            massValue.textContent = mass;
-        }
-        if (fuel === 0) {
-            handleFuelDepletion();
-        }
+  if (engineActivated) {
+    if (altitude < 2000 && fuel > 0) {
+      fuel = Math.max(fuel - 10, 0);
+      fuelValue.textContent = fuel;
+      if(fuel > 0) {
+        mass = Math.max(mass - 1, 0);
+        massValue.textContent = mass;
+      }
+    } else if (altitude >= 2000 && fuel > 0) {
+      fuel = 0; 
+      fuelValue.textContent = fuel;
     }
+  }
 }
+
+setInterval(updateFuel, 100);
 
 function resetValues() {
     fuel = 700;
@@ -115,12 +120,10 @@ document.addEventListener('keyup', (event) => {
 let reachedSpace = false;  
 
 
-
-
 function animate() {
   requestAnimationFrame(animate);
-   console.log(altitude) 
-  
+  console.log(altitude)
+
   clouds.forEach(cloud => {
     let currentTop = parseFloat(cloud.style.top);
     if (isMovingUp || automaticMovement) {
@@ -135,7 +138,6 @@ function animate() {
     }
     cloud.style.top = `${currentTop}px`;
   });
-
 
   stars.forEach(star => {
     let currentTop = parseFloat(star.style.top);
@@ -153,14 +155,13 @@ function animate() {
   });
 
   if (isMovingUp || automaticMovement) {
-    altitude += cloudSpeed;
-    fire.style.display = 'block';
+    altitude += cloudSpeed / 2; 
+    fire.style.display = 'block'; 
     fire.style.opacity = 1;
   } else {
-    altitude -= cloudSpeed;
+    altitude -= cloudSpeed / 4; 
     fire.style.display = 'none';
   }
-
 
   if (altitude < 900) {
     if (!cloudIntervalSet) {
@@ -178,9 +179,7 @@ function animate() {
       star.style.opacity = 0;
     });
     reachedSpace = false;
-  }
-
-
+  } 
   else if (altitude >= 900 && altitude < 2000) {
     const fadeOutOpacity = (1100 - altitude) / 500;
     clouds.forEach(cloud => {
@@ -198,9 +197,7 @@ function animate() {
         cloud.style.opacity = 0;
       });
     }, 5000);
-  }
-
- 
+  } 
   else if (altitude >= 2000) {
     fire.style.display = 'none';
     moon.style.display = "block";
@@ -211,21 +208,17 @@ function animate() {
     stars.forEach(star => {
       star.style.opacity = 1;
     });
-    
     if (!reachedSpace) {
       spaceSound.play();
       reachedSpace = true;
     }
     automaticMovement = true;
-    if (engineActivated) {
-      if (altitude < 2000 && fuel > 0) {
-        fuel = Math.max(fuel - 10, 0);
-        fuelValue.textContent = fuel;
-        if(fuel > 0) {
-          mass = Math.max(mass - 1, 0);
-          massValue.textContent = mass;
-        }
-      }
+    // Stop mass decrease when reaching space
+    if (engineActivated && fuel > 0 && altitude < 2000) {
+      fuel = Math.max(fuel - 10, 0);
+      fuelValue.textContent = fuel;
+      mass = Math.max(mass - 1, 0);
+      massValue.textContent = mass;
     }
     setTimeout(() => {
       guidanceText.style.display = 'block';
@@ -233,8 +226,7 @@ function animate() {
       guidanceText.style.color = "white";
     }, 1000);
   }
-
-
+  
   if (altitude <= 0) {
     guidanceText.style.display = 'block';
     guidanceText.textContent = 'Press Up Arrow to Launch!';
@@ -251,23 +243,13 @@ function animate() {
     fire.style.display = 'none';
   }
   if (altitude >= 2000){
-    moon.style.display = "block";
+    moon.style.display = 'block'; 
+    setTimeout(() => { 
+      moon.style.opacity = 1; 
+    }, 2);
   }
 }
 
-
-function manageSounds() {
-    if (altitude >= 2000) {
-        throttleSound.pause();
-        throttleSound.currentTime = 0;
-        spaceSound.play();
-        fire.style.display = "none";
-    } else {
-        if (isMovingUp && throttleSound.paused) {
-            throttleSound.play();
-        }
-    }
-}
 
 for (let i = 0; i < maxStars; i++) {
     createStar();
@@ -288,7 +270,7 @@ function updateFuel() {
             fuelValue.textContent = fuel;
     
                 
-            if(fuel > 0) {
+            if(fuel > 0 && altitude < 2000) {
                 mass = Math.max(mass - 1, 0);
                 massValue.textContent = mass;
             }
@@ -365,11 +347,6 @@ document.addEventListener('keyup', (event) => {
     }
 });
 
-
-
-
-
-
 function animate() {
   requestAnimationFrame(animate);
 
@@ -416,7 +393,7 @@ function animate() {
   }
 
  
-  if (altitude < 900) {
+  if (altitude < 1500) {
     if (!cloudIntervalSet) {
       for (let i = 0; i < maxClouds; i++) {
         createCloud();
@@ -467,8 +444,7 @@ function animate() {
     
     
     automaticMovement = true;
-    mass = Math.max(mass - 1, 0); 
-    massValue.textContent = mass;
+    
     setTimeout(() => {
       guidanceText.style.display = 'block';
       guidanceText.textContent = 'You reached space!';
