@@ -1,0 +1,131 @@
+body {
+    user-select: none; 
+    margin: 0;
+    overflow: hidden;
+    background-color: skyblue;
+    position: relative;
+    transition: background-color 1s ease;
+}
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50vh;
+}
+#rocket {
+    position: absolute;
+    left: 50%;
+    top: 300px;
+    transform: translate(-50%, 0);
+    width: 250px;
+    height: 300px;
+    z-index: 10;
+}
+#fire {
+    position: absolute;
+    left: 48.4%;
+    top: 574px;
+    transform: translate(-50%, 0);
+    display: none;
+    width: 65px;
+    opacity: 0;
+    animation: flicker 0.2s infinite;
+    transition: opacity 0.3s ease-in-out;
+    transform: rotate(180deg);
+    z-index: 100;
+}
+.cloud {
+    position: absolute;
+    opacity: 0;
+    width: 400px;
+    height: 100px;
+    transition: opacity 0.1s ease-in;
+    transition: opacity 1s ease-out;
+}
+
+.star {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background-color: white;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+
+#guidance-text {
+    position: absolute;
+    font-size: 32px;
+    font-weight: bold;
+    color: black;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    opacity: 1; 
+    transition: opacity 1s ease-in-out; }
+
+@keyframes flicker {
+    0% { opacity: 0.8; }
+    50% { opacity: 1; }
+    100% { opacity: 0.8; }
+}
+
+#status {
+    position: absolute;
+    top: 10px;
+    left: 3%;
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+    display: flex;
+    flex-direction: row;
+    gap :40px;
+    z-index: 100;
+}
+
+
+#result {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 48px;
+    font-weight: bold;
+    color: red;
+    display: none;
+}
+#fuel,#mass{
+    color: white;
+}
+
+
+
+.initial{
+    position: absolute;
+    top: 6%;
+    left: 84%;
+    font-size: 26px;
+    font-weight: bold;
+    color: white;
+    z-index: 100;
+}
+
+#moon {
+    display: none; 
+    opacity: 0; 
+    transition: opacity 10s ease; 
+    position: absolute; 
+    top: 100px; 
+    left: 30%; 
+    height: 300px;
+    width: 300px;
+    transform: translateX(-50%);    
+}
+
+
+@media (max-width: 1700px) {
+    body{
+        display: none;
+    }
+}
